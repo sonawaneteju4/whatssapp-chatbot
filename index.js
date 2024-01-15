@@ -42,21 +42,40 @@ app.post("/webhook", (req, res) => {
       let phone_number_id =
         req.body.entry[0].changes[0].value.metadata.phone_number_id;
       let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-      let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
-      axios({
-        method: "POST", // Required, HTTP method, a string, e.g. POST, GET
-        url:
-          "https://graph.facebook.com/v12.0/" +
-          phone_number_id +
-          "/messages?access_token=" +
-          token,
-        data: {
-          messaging_product: "whatsapp",
-          to: from,
-          text: { body: "Hello GLS USER:" + msg_body },
-        },
-        headers: { "Content-Type": "application/json" },
-      });
+      let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; 
+      if(msg_body === "Hello"){
+        axios({
+            method: "POST", // Required, HTTP method, a string, e.g. POST, GET
+            url:
+              "https://graph.facebook.com/v12.0/" +
+              phone_number_id +
+              "/messages?access_token=" +
+              token,
+            data: {
+              messaging_product: "whatsapp",
+              to: from,
+              text: { body: "Hello GLS USER:" + msg_body },
+            },
+            headers: { "Content-Type": "application/json" },
+          });
+      }else{
+        axios({
+            method: "POST", // Required, HTTP method, a string, e.g. POST, GET
+            url:
+              "https://graph.facebook.com/v12.0/" +
+              phone_number_id +
+              "/messages?access_token=" +
+              token,
+            data: {
+              messaging_product: "whatsapp",
+              to: from,
+              text: { body: "Hello GLS USER You are in if else statement" + msg_body },
+            },
+            headers: { "Content-Type": "application/json" },
+          });
+      }
+      // extract the message text from the webhook payload
+     
     }
     res.sendStatus(200);
   } else {
