@@ -44,7 +44,9 @@ app.post("/webhook", (req, res) => {
       let from = req.body.entry[0].changes[0].value.messages[0].from;
        // extract the phone number from the webhook payload
       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; 
-      if(msg_body == "Learn More"){
+      let button_body = req.body.entry[0].changes[0].value.messages[0].button.text; 
+      
+      if(msg_body || button_body == "Learn More"){
         axios({
           method: "POST",
            // Required, HTTP method, a string, e.g. POST, GET
