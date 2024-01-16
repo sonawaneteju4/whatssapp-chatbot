@@ -44,28 +44,48 @@ app.post("/webhook", (req, res) => {
       let from = req.body.entry[0].changes[0].value.messages[0].from;
        // extract the phone number from the webhook payload
       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; 
-      
-      axios({
-        method: "POST",
-         // Required, HTTP method, a string, e.g. POST, GET
-        url:
-          "https://graph.facebook.com/v12.0/" +
-          phone_number_id +
-          "/messages?access_token=" +
-          token,
-        data: {
-          messaging_product: "whatsapp",
-          to: from,
-          type : "template",
-          template : {
-            name : "learn_more",
-            language : {code : "en"}
+      if(msg_body == "Learn More"){
+        axios({
+          method: "POST",
+           // Required, HTTP method, a string, e.g. POST, GET
+          url:
+            "https://graph.facebook.com/v12.0/" +
+            phone_number_id +
+            "/messages?access_token=" +
+            token,
+          data: {
+            messaging_product: "whatsapp",
+            to: from,
+            type : "template",
+            template : {
+              name : "learn_more",
+              language : {code : "en"}
+            },
           },
-
-          // text: { body: "Hello GLS USER:" + msg_body },
-        },
-        headers: { "Content-Type": "application/json" },
-      });
+          headers: { "Content-Type": "application/json" },
+        });
+      }else{
+        axios({
+          method: "POST",
+           // Required, HTTP method, a string, e.g. POST, GET
+          url:
+            "https://graph.facebook.com/v12.0/" +
+            phone_number_id +
+            "/messages?access_token=" +
+            token,
+            
+          data: {
+            messaging_product: "whatsapp",
+            to: from,
+  
+          
+  
+            text: { body: "Hello GLS USER:" + msg_body },
+          },
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      
       // extract the message text from the webhook payload
      
     }
