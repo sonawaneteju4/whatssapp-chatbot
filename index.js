@@ -59,7 +59,7 @@ app.post("/webhook", (req, res) => {
           type : "template",
           template : {
             name : "learn_more",
-            language : {code : "en_uk"}
+            language : {code : "en"}
           },
 
           // text: { body: "Hello GLS USER:" + msg_body },
