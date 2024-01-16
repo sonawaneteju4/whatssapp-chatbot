@@ -10,7 +10,8 @@
 // Access token for your app
 // (copy token from DevX getting started page
 // and save it as environment variable into the .env file)
-const token = "EAARoG0Iv7cUBO4xhYbpaYLUnpvbFxeR01sPXSKJOTXHxyT46XU5SkOohlbInabTP3Q7unQ6d3aTfIqZAQs5iIP2MZB6jB4lOVFffWwPFtZBSQw9tSe8oDXZA0eyf2oOu7u8woCwIrbk1OlZAVZCThkRT9DiNUfy6KhoZCxTYiLDhBoxgUZAx6QpGyEzdYYcl5bHZC3rZChjZATqjzDupRyCZCDkZD";
+const token =
+  "EAARoG0Iv7cUBO4xhYbpaYLUnpvbFxeR01sPXSKJOTXHxyT46XU5SkOohlbInabTP3Q7unQ6d3aTfIqZAQs5iIP2MZB6jB4lOVFffWwPFtZBSQw9tSe8oDXZA0eyf2oOu7u8woCwIrbk1OlZAVZCThkRT9DiNUfy6KhoZCxTYiLDhBoxgUZAx6QpGyEzdYYcl5bHZC3rZChjZATqjzDupRyCZCDkZD";
 
 // Imports dependencies and set up http server
 const request = require("request"),
@@ -42,70 +43,69 @@ app.post("/webhook", (req, res) => {
       let phone_number_id =
         req.body.entry[0].changes[0].value.metadata.phone_number_id;
       let from = req.body.entry[0].changes[0].value.messages[0].from;
-       // extract the phone number from the webhook payload
-      let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; 
-      if(msg_body === "Learn More"){
+      // extract the phone number from the webhook payload
+      let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
+      if (msg_body === "Learn More") {
         axios({
           method: "POST",
-           // Required, HTTP method, a string, e.g. POST, GET
+          // Required, HTTP method, a string, e.g. POST, GET
           url:
             "https://graph.facebook.com/v12.0/" +
             phone_number_id +
             "/messages?access_token=" +
             token,
-            
+
           data: {
             messaging_product: "whatsapp",
             to: from,
-            type : "template",
-            template : {
-              name : "learn_more",
-              language : {code : "en_uk"}
+            type: "template",
+            template: {
+              name: "learn_more",
+              language: { code: "en" },
             },
-            },
-          headers: { "Content-Type": "application/json" },
-        });
-      }else if(msg_body === "Contact Us"){
-        axios({
-          method: "POST",
-           // Required, HTTP method, a string, e.g. POST, GET
-          url:
-            "https://graph.facebook.com/v12.0/" +
-            phone_number_id +
-            "/messages?access_token=" +
-            token,
-            
-          data: {
-            messaging_product: "whatsapp",
-            to: from,
-            text: { body: "Hello GLS user you can contact us on : https://www.giantleapsystems.com/contactus " },
           },
           headers: { "Content-Type": "application/json" },
         });
-      }else{
+      } else if (msg_body === "Contact Us") {
         axios({
           method: "POST",
-           // Required, HTTP method, a string, e.g. POST, GET
+          // Required, HTTP method, a string, e.g. POST, GET
           url:
             "https://graph.facebook.com/v12.0/" +
             phone_number_id +
             "/messages?access_token=" +
             token,
-            
+
           data: {
             messaging_product: "whatsapp",
             to: from,
-  
-          
-  
+            text: {
+              body: "Hello GLS user you can contact us on : https://www.giantleapsystems.com/contactus ",
+            },
+          },
+          headers: { "Content-Type": "application/json" },
+        });
+      } else {
+        axios({
+          method: "POST",
+          // Required, HTTP method, a string, e.g. POST, GET
+          url:
+            "https://graph.facebook.com/v12.0/" +
+            phone_number_id +
+            "/messages?access_token=" +
+            token,
+
+          data: {
+            messaging_product: "whatsapp",
+            to: from,
+
             text: { body: "Hello GLS USER:" + msg_body },
           },
           headers: { "Content-Type": "application/json" },
         });
       }
-     
+
       // extract the message text from the webhook payload
-     
     }
     res.sendStatus(200);
   } else {
@@ -115,12 +115,12 @@ app.post("/webhook", (req, res) => {
 });
 
 // Accepts GET requests at the /webhook endpoint. You need this URL to setup webhook initially.
-// info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests 
+// info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests
 app.get("/webhook", (req, res) => {
   /**
    * UPDATE YOUR VERIFY TOKEN
    *This will be the Verify Token value when you set up webhook
-  **/
+   **/
   const verify_token = "gls_test";
 
   // Parse params from the webhook verification request
